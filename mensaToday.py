@@ -48,9 +48,7 @@ id = mensaIds[lastparam] if lastparam in mensaIds else mensaIds['-matrix']
 url="https://api.studentenwerk-dresden.de/openmensa/v2"
 #endpoint = f"{url}/canteens?near[lat]={matrixlat}&near[lng]={matrixlon}"
 endpoint = f"{url}/canteens/{id}/days/{today}/meals"
-print(endpoint)
 meals = requests.request("GET", endpoint).json()
-print(meals[0]["name"])
 dataToPrint = [{"name": re.sub(r" \(.*?\)", "", meal["name"]), "price": meal["prices"]["Studierende"]} for meal in meals]
 #Maybe fix? ->
 #dataToPrint = [{"name": re.sub(r" \(.*?\)", "", meal["name"]), "price": meal["prices"]["Studierende"]} for meal in meals]
