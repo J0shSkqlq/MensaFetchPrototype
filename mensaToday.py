@@ -24,10 +24,10 @@ today = datetime.datetime.today().strftime("%Y-%m-%d")
 matrixlat = 51.034128
 matrixlon = 13.733597
 mensaIds = {
-    '-matrix': 80,
-    '-zelt': 78
+    '-matrix': 6,
+    '-zelt': 35
 }
-asciiArts = { 80 : ''' 
+asciiArts = { mensaIds['-matrix'] : ''' 
 \033[36m----------------------------------------------------------------------------
 |   \  |                                  \  |         |         _)        |
 |  |\/ |   _ \  __ \    __|   _` |       |\/ |   _` |  __|   __|  |  \  /  |
@@ -35,7 +35,7 @@ asciiArts = { 80 : '''
 | _|  _| \___| _|  _| ____/ \__._|      _|  _| \__._| \__| _|    _| _/\_\  |
 ----------------------------------------------------------------------------\033[0m
 ''',
-             78 : ''' 
+             mensaIds['-zelt'] : ''' 
 \033[36m------------------------------------------------------------------------------------------------
 | __  /       |  |     ___|        |      |                                 |                  |
 |    /   _ \  |  __| \___ \   __|  __ \   |   _ \    _ \   __|   __|   __|  __ \    _ \  __ \  |
@@ -45,10 +45,14 @@ asciiArts = { 80 : '''
 '''
 }
 id = mensaIds[lastparam] if lastparam in mensaIds else mensaIds['-matrix']
-url="https://openmensa.org/api/v2"
+url="https://api.studentenwerk-dresden.de/openmensa/v2"
 #endpoint = f"{url}/canteens?near[lat]={matrixlat}&near[lng]={matrixlon}"
 endpoint = f"{url}/canteens/{id}/days/{today}/meals"
+print(endpoint)
 meals = requests.request("GET", endpoint).json()
-dataToPrint = [{"name": re.sub(r" \(.*?\)", "", meal["name"]), "price": meal["prices"]["students"]} for meal in meals]
+print(meals[0]["name"])
+dataToPrint = [{"name": re.sub(r" \(.*?\)", "", meal["name"]), "price": meal["prices"]["Studierende"]} for meal in meals]
+#Maybe fix? ->
+#dataToPrint = [{"name": re.sub(r" \(.*?\)", "", meal["name"]), "price": meal["prices"]["Studierende"]} for meal in meals]
 print(asciiArts[id])
 PrettyPrintJson(dataToPrint)
